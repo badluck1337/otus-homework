@@ -1,82 +1,59 @@
 package ru.otus.java.basic.homeworks;
 
-import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Application {
-    private Random random;
-    private ArrayList<Function> functions;
-
-    interface Function {
-        void call();
-    }
-
-    public Application() {
-        random = new Random();
-        functions = new ArrayList<>();
-
-        functions.add(this :: greetings);
-        functions.add(() -> this.checkSign(random.nextInt(),random.nextInt(),random.nextInt()));
-        functions.add(this :: selectColor);
-        functions.add(this :: compareNumbers);
-        functions.add(() -> this.addOrSubtractAndPrint(random.nextInt(),random.nextInt(),random.nextBoolean()));
-
-
-    }
 
     public static void main(String[] args) {
         Application application = new Application();
-        application.greetings();
-        application.checkSign(1, 1, 1);
-        application.selectColor();
-        application.compareNumbers();
-        application.addOrSubtractAndPrint(1,3,true);
+        application.print("s", 2);
+        application.arrayPrint(new int[]{1, 2, 6});
+        application.arrayFill(2, new int[]{1, 2, 3});
+        application.arrayAdd(2, new int[]{1, 2, 3});
+        application.arrayCheck(new int[]{1, 2, 3,-1 , 100});
+    }
 
-        String s = JOptionPane.showInputDialog("Введите число от 1 до 5");
-        try{
-            int value = Integer.parseInt(s) - 1;
-            application.functions.get(value).call();
+    public void print(String text, int number) {
+        for (int i = 0; i < number; i++) {
+            System.out.println(text);
+        }
+    }
 
-        }catch (Exception e){
-            System.out.println("Вы ввели что-то не так | " + e);
+    public void arrayPrint(int[] array) {
+        AtomicInteger num = new AtomicInteger();
+        Arrays.stream(array).filter(x -> x > 5).forEach(x ->
+                num.set(num.get() + x)
+        );
+        System.out.println(num);
+    }
+
+    public void arrayFill(int num, int[] array) {
+        Arrays.fill(array, num);
+    }
+
+    public void arrayAdd(int num, int[] array) {
+        for (int i = 0; i < array.length; i++) {
+            array[i] = array[i] + num;
+        }
+    }
+
+    public void arrayCheck(int[] array) {
+        int middle = array.length / 2;
+        int leftSum = 0;
+        int rightSum = 0;
+
+        for (int i = 0; i < array.length; i++) {
+            if (i < middle) {
+                leftSum += array[i];
+            } else if (array.length % 2 == 0 || i > middle) {
+                rightSum += array[i];
+            }
         }
 
+        System.out.println(leftSum > rightSum ? "Левый больше " + leftSum : "Правый больше " + rightSum );
     }
 
-    public void greetings() {
-        String msg = "Hello World from Java";
-        String[] array = msg.split(" ");
-        Arrays.stream(array).toList().forEach(System.out::println);
-    }
 
-    public void checkSign(int a, int b, int c) {
-        System.out.println(a + b + c >= 0 ? "Сумма положительная" : "Сумма отрицательная");
-    }
-
-    public void selectColor() {
-        int data = random.nextInt();
-        String msg = "s";
-        if (data <= 10) {
-            msg = "Красный";
-        } else if (data <= 20) {
-            msg = "Желтый";
-        } else {
-            msg = "Зеленый";
-        }
-        System.out.println(msg + " | " + data);
-    }
-
-    public void compareNumbers() {
-        int a = random.nextInt();
-        int b = random.nextInt();
-        System.out.println(a >= b ? "a >= b" : "a < b");
-    }
-
-    public void addOrSubtractAndPrint(int initValue, int delta, boolean increment) {
-        initValue = increment ? initValue + delta : initValue - delta;
-        System.out.println(initValue);
-    }
 }
