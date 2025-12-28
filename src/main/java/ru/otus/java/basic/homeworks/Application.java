@@ -8,51 +8,88 @@ public class Application {
 
     public static void main(String[] args) {
         Application application = new Application();
-        application.print("s", 2);
-        application.arrayPrint(new int[]{1, 2, 6});
-        application.arrayFill(2, new int[]{1, 2, 3});
-        application.arrayAdd(2, new int[]{1, 2, 3});
-        application.arrayCheck(new int[]{1, 2, 3,-1 , 100});
+        System.out.println( application.sumOfPositiveElements(new int[][]{
+                {1, 2, 4},
+                {1, 2, 5},
+                {1, -100, 5},
+        }));
+        application.drawQuad(5);
+        application.diagonullException(new int[][]{
+                {1, 1, 1, 1},
+                {1, 1, 1, 1},
+                {1, 1, 1, 1},
+                {1, 1, 1, 1}
+        });
+        System.out.println(application.getMax(new int[][]{
+                {1, 1, 1, 1},
+                {1, 400, 1, 1},
+                {1, 100, 1, 1},
+                {1, 1, 1000, 1}
+        }));
+
+        System.out.println(application.getTwo(new int[][]{
+                {1, 1, 1, 1},
+                {1, 400, 1, 1}
+        }));
     }
 
-    public void print(String text, int number) {
-        for (int i = 0; i < number; i++) {
-            System.out.println(text);
-        }
-    }
-
-    public void arrayPrint(int[] array) {
-        AtomicInteger num = new AtomicInteger();
-        Arrays.stream(array).filter(x -> x > 5).forEach(x ->
-                num.set(num.get() + x)
-        );
-        System.out.println(num);
-    }
-
-    public void arrayFill(int num, int[] array) {
-        Arrays.fill(array, num);
-    }
-
-    public void arrayAdd(int num, int[] array) {
-        for (int i = 0; i < array.length; i++) {
-            array[i] = array[i] + num;
-        }
-    }
-
-    public void arrayCheck(int[] array) {
-        int middle = array.length / 2;
-        int leftSum = 0;
-        int rightSum = 0;
-
-        for (int i = 0; i < array.length; i++) {
-            if (i < middle) {
-                leftSum += array[i];
-            } else if (array.length % 2 == 0 || i > middle) {
-                rightSum += array[i];
+    public int sumOfPositiveElements(int[][] array) {
+        int sum = 0;
+        for (int[] a : array) {
+            for (int b : a) {
+                if (b > 0)
+                    sum += b;
             }
         }
+        return sum;
+    }
 
-        System.out.println(leftSum > rightSum ? "Левый больше " + leftSum : "Правый больше " + rightSum );
+    public void drawQuad(int size) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int a = 0; a < size; a++) {
+            if (a > 0)
+                stringBuilder.append("\n");
+
+            stringBuilder.append("*".repeat(size));
+        }
+        System.out.println(stringBuilder);
+    }
+
+    public void diagonullException(int[][] array) {
+        List<int[]> list = Arrays.stream(array).toList();
+        for (int i = 0; i < list.size(); i++) {
+            list.get(i)[i] = 0;
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+
+        for (int i = 0; i < list.size(); i++) {
+            for (int z = 0; z < list.get(i).length; z++) {
+                stringBuilder.append(list.get(i)[z]);
+            }
+            stringBuilder.append("\n");
+        }
+        System.out.println(stringBuilder);
+    }
+
+    public int getMax(int[][] array) {
+        int max = 0;
+        List<int[]> list = Arrays.stream(array).toList();
+        for (int i = 0; i < list.size(); i++) {
+            max = Math.max(Arrays.stream(list.get(i)).max().getAsInt(), max);
+        }
+        return max;
+
+    }
+    public int getTwo(int[][] array) {
+
+        List<int[]> list = Arrays.stream(array).toList();
+        if (list.size() > 1){
+            return Arrays.stream(list.get(1)).max().getAsInt();
+        }else{
+            return -1;
+        }
     }
 
 
