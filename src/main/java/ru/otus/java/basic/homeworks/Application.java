@@ -2,6 +2,7 @@ package ru.otus.java.basic.homeworks;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.IntPredicate;
 
 
 public class Application {
@@ -34,60 +35,31 @@ public class Application {
     }
 
     public int sumOfPositiveElements(int[][] array) {
-        int sum = 0;
-        for (int[] a : array) {
-            for (int b : a) {
-                if (b > 0)
-                    sum += b;
-            }
-        }
-        return sum;
+        return Arrays.stream(array).flatMapToInt(Arrays::stream).filter(x -> x > 0).sum();
     }
 
     public void drawQuad(int size) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int a = 0; a < size; a++) {
-            if (a > 0)
-                stringBuilder.append("\n");
-
-            stringBuilder.append("*".repeat(size));
-        }
-        System.out.println(stringBuilder);
+        String line = "*".repeat(size);
+        String text = String.join("\n", Collections.nCopies(size, line));
+        System.out.println(text);
     }
 
     public void diagonullException(int[][] array) {
-        List<int[]> list = Arrays.stream(array).toList();
-        for (int i = 0; i < list.size(); i++) {
-            list.get(i)[i] = 0;
-        }
-
-        StringBuilder stringBuilder = new StringBuilder();
-
-
-        for (int i = 0; i < list.size(); i++) {
-            for (int z = 0; z < list.get(i).length; z++) {
-                stringBuilder.append(list.get(i)[z]);
+        for (int i = 0; i < array.length; i++) {
+            if (i < array[i].length) {
+                array[i][i] = 0;
             }
-            stringBuilder.append("\n");
         }
-        System.out.println(stringBuilder);
     }
 
     public int getMax(int[][] array) {
-        int max = 0;
-        List<int[]> list = Arrays.stream(array).toList();
-        for (int i = 0; i < list.size(); i++) {
-            max = Math.max(Arrays.stream(list.get(i)).max().getAsInt(), max);
-        }
-        return max;
-
+        return Arrays.stream(array).flatMapToInt(Arrays::stream).max().orElse(Integer.MIN_VALUE);
     }
-    public int getTwo(int[][] array) {
 
-        List<int[]> list = Arrays.stream(array).toList();
-        if (list.size() > 1){
-            return Arrays.stream(list.get(1)).max().getAsInt();
-        }else{
+    public int getTwo(int[][] array) {
+        if (array.length > 1) {
+            return Arrays.stream(array[1]).max().orElse(-1);
+        } else {
             return -1;
         }
     }
