@@ -39,11 +39,16 @@ public class Application {
         };
 
         for (int i = 0; i < users.length; i++) {
+            String name =  arrayName[random.nextInt(arrayName.length)];
+            String surname = arraySurname[random.nextInt(arraySurname.length)];
+            String patronymic = arrayPatronymic[random.nextInt(arrayPatronymic.length)];
+            String email =  arrayEmails[random.nextInt(arrayEmails.length)];
             Date date = new Date(125 - random.nextInt(50),12 - random.nextInt(11),25 - random.nextInt(24));
-            users[i] = new User(arrayName[random.nextInt(arrayName.length)],
-                    arraySurname[random.nextInt(arraySurname.length)],
-                    arrayPatronymic[random.nextInt(arrayPatronymic.length)],
-                    arrayEmails[random.nextInt(arrayEmails.length)],
+            users[i] = new User(
+                    name,
+                    surname,
+                    patronymic,
+                    email,
                     date.toInstant()
                     );
 
