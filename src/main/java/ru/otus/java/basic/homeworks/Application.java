@@ -1,67 +1,71 @@
 package ru.otus.java.basic.homeworks;
 
+import java.awt.*;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntPredicate;
+import java.util.stream.IntStream;
 
 
 public class Application {
+    private static Random random = new Random();
 
     public static void main(String[] args) {
-        Application application = new Application();
-        System.out.println( application.sumOfPositiveElements(new int[][]{
-                {1, 2, 4},
-                {1, 2, 5},
-                {1, -100, 5},
-        }));
-        application.drawQuad(5);
-        application.diagonullException(new int[][]{
-                {1, 1, 1, 1},
-                {1, 1, 1, 1},
-                {1, 1, 1, 1},
-                {1, 1, 1, 1}
-        });
-        System.out.println(application.getMax(new int[][]{
-                {1, 1, 1, 1},
-                {1, 400, 1, 1},
-                {1, 100, 1, 1},
-                {1, 1, 1000, 1}
-        }));
 
-        System.out.println(application.getTwo(new int[][]{
-                {1, 1, 1, 1},
-                {1, 400, 1, 1}
-        }));
-    }
+        User[] users = new User[10];
+        String[] arrayName = {
+                "Petya",
+                "Vasya",
+                "Anton"
+        };
+        String[] arraySurname = {
+                "Vasielv",
+                "Babuinov",
+                "Makakuinov"
+        };
 
-    public int sumOfPositiveElements(int[][] array) {
-        return Arrays.stream(array).flatMapToInt(Arrays::stream).filter(x -> x > 0).sum();
-    }
+        String[] arrayPatronymic = {
+                "Antonevich",
+                "Babuinovich",
+                "Makakakovich"
+        };
+        String[] arrayEmails = {
+                "Antonevich@mail.ru",
+                "Babuinovich@mail.ru",
+                "Makakakovich@mail.ru"
+        };
 
-    public void drawQuad(int size) {
-        String line = "*".repeat(size);
-        String text = String.join("\n", Collections.nCopies(size, line));
-        System.out.println(text);
-    }
+        for (int i = 0; i < users.length; i++) {
+            String name =  arrayName[random.nextInt(arrayName.length)];
+            String surname = arraySurname[random.nextInt(arraySurname.length)];
+            String patronymic = arrayPatronymic[random.nextInt(arrayPatronymic.length)];
+            String email =  arrayEmails[random.nextInt(arrayEmails.length)];
+            Date date = new Date(125 - random.nextInt(50),12 - random.nextInt(11),25 - random.nextInt(24));
+            users[i] = new User(
+                    name,
+                    surname,
+                    patronymic,
+                    email,
+                    date.toInstant()
+                    );
 
-    public void diagonullException(int[][] array) {
-        for (int i = 0; i < array.length; i++) {
-            if (i < array[i].length) {
-                array[i][i] = 0;
-            }
+               if(date.before(Date.from(LocalDate.now().minusYears(40).atStartOfDay().toInstant(ZoneOffset.UTC)))){
+                   users[i].print();
+               }
         }
-    }
 
-    public int getMax(int[][] array) {
-        return Arrays.stream(array).flatMapToInt(Arrays::stream).max().orElse(Integer.MIN_VALUE);
-    }
-
-    public int getTwo(int[][] array) {
-        if (array.length > 1) {
-            return Arrays.stream(array[1]).max().orElse(-1);
-        } else {
-            return -1;
-        }
+        Box box = new Box(Color.red,false,"ЛУПА",3);
+        box.addItem("лупа2");
+        box.dropItem();
+        box.print();
+        box.setColor(Color.gray);
+        box.open();
+        box.dropItem();
+        box.addItem("лупа2");
+        box.print();
     }
 
 
