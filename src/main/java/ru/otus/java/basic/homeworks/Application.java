@@ -1,72 +1,24 @@
 package ru.otus.java.basic.homeworks;
 
-import java.awt.*;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.IntPredicate;
-import java.util.stream.IntStream;
 
+import module java.base;
 
 public class Application {
-    private static Random random = new Random();
+    public static void main(final String[] args) {
+        Human human = new Human("Alex");
+        human.move(Landscape.SWAMP);
 
-    public static void main(String[] args) {
+        human.sitDown(new AllTerrainVehicle());
+        human.move(Landscape.SWAMP);
 
-        User[] users = new User[10];
-        String[] arrayName = {
-                "Petya",
-                "Vasya",
-                "Anton"
-        };
-        String[] arraySurname = {
-                "Vasielv",
-                "Babuinov",
-                "Makakuinov"
-        };
+        human.sitDown(new Bike());
 
-        String[] arrayPatronymic = {
-                "Antonevich",
-                "Babuinovich",
-                "Makakakovich"
-        };
-        String[] arrayEmails = {
-                "Antonevich@mail.ru",
-                "Babuinovich@mail.ru",
-                "Makakakovich@mail.ru"
-        };
+        human.standUp();
 
-        for (int i = 0; i < users.length; i++) {
-            String name =  arrayName[random.nextInt(arrayName.length)];
-            String surname = arraySurname[random.nextInt(arraySurname.length)];
-            String patronymic = arrayPatronymic[random.nextInt(arrayPatronymic.length)];
-            String email =  arrayEmails[random.nextInt(arrayEmails.length)];
-            Date date = new Date(125 - random.nextInt(50),12 - random.nextInt(11),25 - random.nextInt(24));
-            users[i] = new User(
-                    name,
-                    surname,
-                    patronymic,
-                    email,
-                    date.toInstant()
-                    );
 
-               if(date.before(Date.from(LocalDate.now().minusYears(40).atStartOfDay().toInstant(ZoneOffset.UTC)))){
-                   users[i].print();
-               }
-        }
+        human.sitDown(new Bike());
+        human.move(Landscape.SWAMP);
 
-        Box box = new Box(Color.red,false,"ЛУПА",3);
-        box.addItem("лупа2");
-        box.dropItem();
-        box.print();
-        box.setColor(Color.gray);
-        box.open();
-        box.dropItem();
-        box.addItem("лупа2");
-        box.print();
+
     }
-
-
 }
