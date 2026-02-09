@@ -4,29 +4,21 @@ package ru.otus.java.basic.homeworks;
 import module java.base;
 
 public class Application {
-
-
     public static void main(final String[] args) {
-        final var cats = Arrays.asList(
-                new Cat("Вася", 10),
-                new Cat("Цезарь", 15),
-                new Cat("Стич", 20),
-                new Cat("Гарфилд", 25)
-        );
+        Human human = new Human("Alex");
+        human.move(Landscape.SWAMP);
+
+        human.sitDown(new AllTerrainVehicle());
+        human.move(Landscape.SWAMP);
+
+        human.sitDown(new Bike());
+
+        human.standUp();
 
 
-        final var plate = new Plate(50);
+        human.sitDown(new Bike());
+        human.move(Landscape.SWAMP);
 
-        System.out.println("Кормление котов:");
-        plate.info();
-        System.out.println();
 
-        cats.forEach(cat -> cat.eat(plate));
-
-        System.out.println("\nРезультат:");
-        cats.forEach(Cat::info);
-        plate.info();
     }
-
-
 }
