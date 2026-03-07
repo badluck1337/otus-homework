@@ -4,7 +4,7 @@ package ru.otus.java.basic.homeworks;
 import module java.base;
 
 public class Application {
-//1
+
     public static void main(String[] args) {
         List<Integer> numbers = method1(1, 10);
         System.out.println(numbers);
