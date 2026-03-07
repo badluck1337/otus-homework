@@ -5,48 +5,82 @@ import module java.base;
 
 public class Application {
 
+    public static void main(String[] args) {
+        List<Integer> numbers = method1(1, 10);
+        System.out.println(numbers);
 
-        static int sumArray(String[][] array) throws AppArraySizeException, AppArrayDataException {
+        System.out.println(method2(numbers));
 
-            if (array.length != 4) {
-                throw new AppArraySizeException("Массив должен содержать 4x4 элементов");
-            }
+        method3(3, numbers);
+        System.out.println(numbers);
 
-            for (int i = 0; i < array.length; i++) {
-                if (array[i].length != 4) {
-                    throw new AppArraySizeException("Массив должен содержать 4x4 элементов");
-                }
-            }
+        method4(2, numbers);
+        System.out.println(numbers);
 
-            int sum = 0;
-            for (int i = 0; i < array.length; i++) {
-                for (int j = 0; j < array[i].length; j++) {
-                    try {
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee("Олег", 25));
+        employees.add(new Employee("Маша", 30));
+        employees.add(new Employee("Джон", 20));
 
-                        sum = Math.addExact(sum,Integer.parseInt(array[i][j]));
-                    } catch (NumberFormatException ex) {
-                        throw new AppArrayDataException(
-                                "Не удалось преобразовать строку в число в ячейке: " + String.format("%d %d", i, j));
-                    }
+        System.out.println(method5(employees));
 
-                }
-            }
+        System.out.println(method6(employees, 25).size());
 
-            return sum;
-        }
+        System.out.println(method7(employees, 24));
 
-        public static void main(String[] args) {
-            String[][] array = {{"0", "1", "2", "6"}, {"5", "4", "7", "8s"}, {"0", "1", "2", "6"},
-                    {"5", "6", "7", "8"}};
+        System.out.println(method8(employees).getName());
 
-            try {
-                System.out.println("Сумма элементов массива равна: " + sumArray(array));
-            } catch (AppArraySizeException e) {
-                e.printStackTrace();
-            } catch (AppArrayDataException e) {
-                e.printStackTrace();
-            }
+    }
+    public static List<Integer> method1(int min, int max) {
+        return IntStream.rangeClosed(min, max)
+                .boxed()
+                .collect(Collectors.toList());
+    }
 
-        }
 
+    public static int method2(List<Integer> list) {
+        return list.stream()
+                .filter(n -> n > 5)
+                .mapToInt(Integer::intValue)
+                .sum();
+    }
+
+
+    public static void method3(int value, List<Integer> list) {
+        Collections.fill(list, value);
+    }
+
+
+    public static void method4(int value, List<Integer> list) {
+        IntStream.range(0, list.size())
+                .forEach(i -> list.set(i, list.get(i) + value));
+    }
+
+
+    public static List<String> method5(List<Employee> employees) {
+        return employees.stream()
+                .map(Employee::getName)
+                .collect(Collectors.toList());
+    }
+
+
+    public static List<Employee> method6(List<Employee> employees, int minAge) {
+        return employees.stream()
+                .filter(e -> e.getAge() >= minAge)
+                .collect(Collectors.toList());
+    }
+
+
+    public static boolean method7(List<Employee> employees, int minAverageAge) {
+        return employees.stream()
+                .mapToInt(Employee::getAge)
+                .average()
+                .orElse(0) > minAverageAge;
+    }
+
+    public static Employee method8(List<Employee> employees) {
+        return employees.stream()
+                .min(Comparator.comparingInt(Employee::getAge))
+                .orElse(null);
+    }
 }
